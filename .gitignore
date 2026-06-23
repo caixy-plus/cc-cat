@@ -1,0 +1,8 @@
+.build/
+.release/
+dist/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+SwiftUninstall.xcodeproj
+.qoder/

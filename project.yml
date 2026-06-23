@@ -1,0 +1,38 @@
+name: SwiftUninstall
+options:
+  bundleIdPrefix: com.caixinyun
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_STYLE: Automatic
+targets:
+  SwiftUninstall:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/SwiftUninstall
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.caixinyun.SwiftUninstall
+        PRODUCT_NAME: SwiftUninstall
+        PRODUCT_MODULE_NAME: SwiftUninstall
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Sources/SwiftUninstall/Resources/Info.plist
+        SWIFT_STRICT_CONCURRENCY: minimal
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  SwiftUninstallTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/SwiftUninstallTests
+    dependencies:
+      - target: SwiftUninstall
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.caixinyun.SwiftUninstallTests
+        GENERATE_INFOPLIST_FILE: YES
