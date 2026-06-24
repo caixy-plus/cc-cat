@@ -13,11 +13,15 @@ final class AppState: ObservableObject {
     @Published var completionMessage: String?
     @Published var history: [UninstallRecord] = []
     @Published var showsHistory = false
+    @Published var orphanCandidates: [ResidueCandidate] = []
+    @Published var isScanningOrphans = false
+    @Published var showsOrphanScan = false
 
     private let discovery = ApplicationDiscovery()
     private let scanner = ResidueScanner()
     private let executor = UninstallExecutor()
     private let historyStore = HistoryStore()
+    private let orphanScanner = OrphanScanner()
 
     var filteredApplications: [InstalledApplication] {
         guard !searchText.isEmpty else { return applications }
@@ -33,6 +37,10 @@ final class AppState: ObservableObject {
 
     var selectedSize: Int64 {
         candidates.filter(\.isSelected).reduce(0) { $0 + $1.allocatedSize }
+    }
+
+    var selectedOrphanSize: Int64 {
+        orphanCandidates.filter(\.isSelected).reduce(0) { $0 + $1.allocatedSize }
     }
 
     init() {
@@ -78,6 +86,45 @@ final class AppState: ObservableObject {
             errorMessage = error.localizedDescription
         }
         isUninstalling = false
+    }
+
+    func scanOrphans() async {
+        isScanningOrphans = true
+        errorMessage = nil
+        orphanCandidates = await orphanScanner.scan(installedApplications: applications)
+        isScanningOrphans = false
+    }
+
+    func cleanupSelectedOrphans() async {
+        guard orphanCandidates.contains(where: \.isSelected) else { return }
+        isUninstalling = true
+        errorMessage = nil
+        do {
+            let placeholder = InstalledApplication(
+                url: URL(fileURLWithPath: "/"),
+                name: "孤儿残留",
+                bundleIdentifier: nil,
+                version: nil,
+                executableName: nil,
+                teamIdentifier: nil,
+                installedSize: 0,
+                isSystemApplication: false
+            )
+            let report = ScanReport(application: placeholder, createdAt: Date(), candidates: orphanCandidates)
+            let record = try await executor.uninstall(report: report)
+            completionMessage = "已清理 \(record.items.count) 项残留"
+            orphanCandidates = []
+            await reloadHistory()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isUninstalling = false
+    }
+
+    func selectRecommendedOrphans() {
+        for index in orphanCandidates.indices {
+            orphanCandidates[index].isSelected = orphanCandidates[index].confidence >= .likely
+        }
     }
 
     func restore(_ record: UninstallRecord) async {

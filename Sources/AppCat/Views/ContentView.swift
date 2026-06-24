@@ -36,6 +36,9 @@ struct ContentView: View {
                 Button { state.showsHistory = true } label: {
                     Label("卸载记录", systemImage: "clock.arrow.circlepath")
                 }
+                Button { state.showsOrphanScan = true } label: {
+                    Label("残留扫描", systemImage: "sparkles")
+                }
             }
         } detail: {
             if let application = state.selectedApplication {
@@ -54,6 +57,10 @@ struct ContentView: View {
         }
         .sheet(isPresented: $state.showsHistory) {
             HistoryView()
+                .environmentObject(state)
+        }
+        .sheet(isPresented: $state.showsOrphanScan) {
+            OrphanScanView()
                 .environmentObject(state)
         }
         .alert("操作失败", isPresented: Binding(
