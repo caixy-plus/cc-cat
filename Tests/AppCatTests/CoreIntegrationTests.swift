@@ -1,5 +1,5 @@
 import XCTest
-@testable import SwiftUninstall
+@testable import AppCat
 
 final class CoreIntegrationTests: XCTestCase {
     func testDiscoversInstalledApplicationsWithMetadata() async {
@@ -24,7 +24,7 @@ final class CoreIntegrationTests: XCTestCase {
         let bundle = Bundle.main
         let application = InstalledApplication(
             url: bundle.bundleURL,
-            name: "应用卸载器",
+            name: "AppCat",
             bundleIdentifier: bundle.bundleIdentifier,
             version: nil,
             executableName: nil,
@@ -36,7 +36,7 @@ final class CoreIntegrationTests: XCTestCase {
     }
 
     func testSelfUninstallMovesSharedRecoveryOutsideItself() {
-        let source = URL(fileURLWithPath: "/Users/Shared/SwiftUninstall Recovery", isDirectory: true)
+        let source = URL(fileURLWithPath: "/Users/Shared/AppCat Recovery", isDirectory: true)
         let recordID = UUID()
         let destination = UninstallExecutor.administratorDestination(
             for: source,

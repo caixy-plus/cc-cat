@@ -1,5 +1,5 @@
 import XCTest
-@testable import SwiftUninstall
+@testable import AppCat
 
 final class ResidueMatcherTests: XCTestCase {
     private let application = InstalledApplication(

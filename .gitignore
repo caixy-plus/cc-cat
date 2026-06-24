@@ -4,5 +4,5 @@ dist/
 *.xcuserstate
 xcuserdata/
 .DS_Store
-SwiftUninstall.xcodeproj
+AppCat.xcodeproj
 .qoder/

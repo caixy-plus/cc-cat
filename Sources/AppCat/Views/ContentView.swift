@@ -7,7 +7,7 @@ struct ContentView: View {
         NavigationSplitView {
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 5) {
-                    Label("应用卸载器", systemImage: "trash.square.fill")
+                    Label("AppCat", systemImage: "trash.square.fill")
                         .font(.title2.weight(.semibold))
                     Text("选择应用，扫描并清理卸载残留")
                         .font(.caption)
@@ -31,7 +31,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationTitle("应用卸载器")
+            .navigationTitle("AppCat")
             .toolbar {
                 Button { state.showsHistory = true } label: {
                     Label("卸载记录", systemImage: "clock.arrow.circlepath")

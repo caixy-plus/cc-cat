@@ -6,7 +6,7 @@ actor HistoryStore {
 
     init() {
         let base = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("SwiftUninstall", isDirectory: true)
+            .appendingPathComponent("AppCat", isDirectory: true)
         try? fileManager.createDirectory(at: base, withIntermediateDirectories: true)
         recordsURL = base.appendingPathComponent("UninstallHistory.json")
     }

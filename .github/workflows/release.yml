@@ -34,8 +34,8 @@ jobs:
       - name: Build Release
         run: |
           xcodebuild \
-            -project SwiftUninstall.xcodeproj \
-            -scheme SwiftUninstall \
+            -project AppCat.xcodeproj \
+            -scheme AppCat \
             -configuration Release \
             -derivedDataPath .release \
             CODE_SIGN_IDENTITY=- \
@@ -46,8 +46,8 @@ jobs:
       - name: Stage .app for packaging
         run: |
           mkdir -p dist
-          rm -rf dist/应用卸载器.app
-          ditto .release/Build/Products/Release/SwiftUninstall.app "dist/应用卸载器.app"
+          rm -rf dist/AppCat.app
+          ditto .release/Build/Products/Release/AppCat.app "dist/AppCat.app"
 
       - name: Determine version
         id: ver
@@ -64,15 +64,15 @@ jobs:
 
       - name: Create DMG
         run: |
-          DMG="dist/SwiftUninstall-v${{ steps.ver.outputs.version }}.dmg"
-          hdiutil create -volname "SwiftUninstall" -srcfolder "dist/应用卸载器.app" -ov -format UDZO "$DMG"
+          DMG="dist/AppCat-v${{ steps.ver.outputs.version }}.dmg"
+          hdiutil create -volname "AppCat" -srcfolder "dist/AppCat.app" -ov -format UDZO "$DMG"
           echo "Created $DMG"
           ls -lh dist
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SwiftUninstall-v${{ steps.ver.outputs.version }}
+          name: AppCat-v${{ steps.ver.outputs.version }}
           path: dist/*.dmg
 
       - name: Create GitHub Release
@@ -81,6 +81,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "${GITHUB_REF#refs/tags/}" \
-            "dist/SwiftUninstall-v${{ steps.ver.outputs.version }}.dmg" \
+            "dist/AppCat-v${{ steps.ver.outputs.version }}.dmg" \
             --title "v${{ steps.ver.outputs.version }}" \
             --generate-notes

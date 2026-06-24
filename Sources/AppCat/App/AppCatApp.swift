@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct SwiftUninstallApp: App {
+struct AppCatApp: App {
     @StateObject private var state = AppState()
 
     var body: some Scene {

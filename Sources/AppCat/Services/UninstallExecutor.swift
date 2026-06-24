@@ -31,7 +31,7 @@ actor UninstallExecutor {
         await unloadLaunchItems(in: selected)
 
         let recordID = UUID()
-        let recoveryRoot = URL(fileURLWithPath: "/Users/Shared/SwiftUninstall Recovery", isDirectory: true)
+        let recoveryRoot = URL(fileURLWithPath: "/Users/Shared/AppCat Recovery", isDirectory: true)
             .appendingPathComponent(recordID.uuidString, isDirectory: true)
 
         var administratorCommands: [String] = []
@@ -123,7 +123,7 @@ actor UninstallExecutor {
             guard let original = item.originalURL, let recovery = item.recoveryURL,
                   fileManager.fileExists(atPath: recovery.path) else { continue }
 
-            if recovery.path.hasPrefix("/Users/Shared/SwiftUninstall Recovery/") {
+            if recovery.path.hasPrefix("/Users/Shared/AppCat Recovery/") {
                 administratorCommands.append("/bin/mkdir -p \(AdministratorExecutor.shellQuoted(original.deletingLastPathComponent().path))")
                 administratorCommands.append("/bin/mv -- \(AdministratorExecutor.shellQuoted(recovery.path)) \(AdministratorExecutor.shellQuoted(original.path))")
             } else {
@@ -145,12 +145,12 @@ actor UninstallExecutor {
         isSelfUninstall: Bool,
         homeDirectory: URL
     ) -> URL {
-        let sharedRecoveryBase = URL(fileURLWithPath: "/Users/Shared/SwiftUninstall Recovery", isDirectory: true)
+        let sharedRecoveryBase = URL(fileURLWithPath: "/Users/Shared/AppCat Recovery", isDirectory: true)
         if isSelfUninstall,
            source.standardizedFileURL == sharedRecoveryBase.standardizedFileURL {
             return homeDirectory
                 .appendingPathComponent(".Trash", isDirectory: true)
-                .appendingPathComponent("SwiftUninstall Recovery-\(recordID.uuidString)", isDirectory: true)
+                .appendingPathComponent("AppCat Recovery-\(recordID.uuidString)", isDirectory: true)
         }
         return recoveryRoot.appendingPathComponent("\(UUID().uuidString)-\(source.lastPathComponent)")
     }

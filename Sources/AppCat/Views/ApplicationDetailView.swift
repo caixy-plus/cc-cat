@@ -45,7 +45,7 @@ struct ApplicationDetailView: View {
             }
         } message: {
             if application.isCurrentApplication {
-                Text("应用卸载器会将自身及自身数据移入废纸篓，然后自动退出。")
+                Text("AppCat 会将自身及自身数据移入废纸篓，然后自动退出。")
             } else {
                 Text("普通项目会移入废纸篓；系统项目会移入恢复区。此操作可能请求一次管理员授权。")
             }
@@ -97,7 +97,7 @@ struct ApplicationDetailView: View {
                 .foregroundStyle(.secondary)
             Spacer()
             if state.isUninstalling { ProgressView().controlSize(.small) }
-            Button(application.isCurrentApplication ? "卸载应用卸载器自身" : "卸载应用与所选残留", role: .destructive) {
+            Button(application.isCurrentApplication ? "卸载 AppCat 自身" : "卸载应用与所选残留", role: .destructive) {
                 confirmsUninstall = true
             }
                 .buttonStyle(.borderedProminent)

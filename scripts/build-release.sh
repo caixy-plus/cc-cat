@@ -4,8 +4,8 @@ set -euo pipefail
 cd "${0:A:h}/.."
 xcodegen generate
 xcodebuild \
-  -project SwiftUninstall.xcodeproj \
-  -scheme SwiftUninstall \
+  -project AppCat.xcodeproj \
+  -scheme AppCat \
   -configuration Release \
   -derivedDataPath .release \
   CODE_SIGN_IDENTITY=- \
@@ -13,7 +13,7 @@ xcodebuild \
   build
 
 mkdir -p dist
-rm -rf dist/SwiftUninstall.app dist/应用卸载器.app
-ditto .release/Build/Products/Release/SwiftUninstall.app dist/应用卸载器.app
-codesign --verify --deep --strict dist/应用卸载器.app
-echo "Built dist/应用卸载器.app"
+rm -rf dist/AppCat.app
+ditto .release/Build/Products/Release/AppCat.app dist/AppCat.app
+codesign --verify --deep --strict dist/AppCat.app
+echo "Built dist/AppCat.app"

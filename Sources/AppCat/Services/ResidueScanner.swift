@@ -16,7 +16,7 @@ actor ResidueScanner {
 
         if application.isCurrentApplication {
             let ownSupport = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-                .appendingPathComponent("SwiftUninstall", isDirectory: true)
+                .appendingPathComponent("AppCat", isDirectory: true)
             if fileManager.fileExists(atPath: ownSupport.path) {
                 seen.insert(ownSupport.standardizedFileURL.path)
                 candidates.append(ResidueCandidate(

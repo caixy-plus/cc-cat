@@ -1,4 +1,4 @@
-# SwiftUninstall
+# AppCat
 
 轻量、原生、无常驻后台的 macOS 应用卸载工具。
 
@@ -6,7 +6,7 @@
 
 - 使用 Bundle ID、应用名称、可执行文件名、配置内容和安装收据进行关联归因。
 - 将候选项分为“确定相关 / 高度相关 / 可能相关”，默认不选择低置信度项目。
-- 普通文件移入废纸篓；系统级文件移入 `/Users/Shared/SwiftUninstall Recovery`。
+- 普通文件移入废纸篓；系统级文件移入 `/Users/Shared/AppCat Recovery`。
 - 系统级操作合并为一次管理员授权。
 - 卸载前退出目标应用并卸载其用户级启动项。
 - 保存卸载历史和恢复路径，不运行后台守护进程。
@@ -15,7 +15,7 @@
 
 ```sh
 xcodegen generate
-xcodebuild -project SwiftUninstall.xcodeproj -scheme SwiftUninstall -configuration Debug build
+xcodebuild -project AppCat.xcodeproj -scheme AppCat -configuration Debug build
 ```
 
 项目当前聚焦卸载引擎，SwiftUI 界面保持简洁，便于后续独立美化。
