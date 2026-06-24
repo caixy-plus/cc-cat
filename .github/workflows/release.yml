@@ -25,29 +25,11 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
-      - name: Install xcodegen
-        run: brew install xcodegen
+      - name: Install tooling
+        run: brew install xcodegen create-dmg
 
-      - name: Generate Xcode project
-        run: xcodegen generate
-
-      - name: Build Release
-        run: |
-          xcodebuild \
-            -project AppCat.xcodeproj \
-            -scheme AppCat \
-            -configuration Release \
-            -derivedDataPath .release \
-            CODE_SIGN_IDENTITY=- \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            build
-
-      - name: Stage .app for packaging
-        run: |
-          mkdir -p dist
-          rm -rf dist/AppCat.app
-          ditto .release/Build/Products/Release/AppCat.app "dist/AppCat.app"
+      - name: Build app
+        run: scripts/build-release.sh
 
       - name: Determine version
         id: ver
@@ -63,11 +45,7 @@ jobs:
           echo "Resolved version: $VERSION"
 
       - name: Create DMG
-        run: |
-          DMG="dist/AppCat-v${{ steps.ver.outputs.version }}.dmg"
-          hdiutil create -volname "AppCat" -srcfolder "dist/AppCat.app" -ov -format UDZO "$DMG"
-          echo "Created $DMG"
-          ls -lh dist
+        run: scripts/create-dmg.sh "${{ steps.ver.outputs.version }}"
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
